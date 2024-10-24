@@ -1,7 +1,21 @@
 import streamlit as st
 import random
+from PIL import Image
+import requests
+from io import BytesIO
 
 st.title("詳細ヤンデレ度診断")
+
+# ヤンデレ画像のURL（例として使用します。実際の使用には著作権に注意してください）
+yandere_image_url = "https://example.com/yandere_image.jpg"
+
+# 画像を読み込んで表示
+try:
+    response = requests.get(yandere_image_url)
+    image = Image.open(BytesIO(response.content))
+    st.image(image, caption="ヤンデレのイメージ", use_column_width=True)
+except Exception as e:
+    st.error(f"画像の読み込みに失敗しました: {e}")
 
 questions = [
     "好きな人の連絡先をすべて知っていますか？",
@@ -46,7 +60,6 @@ if st.button("診断する"):
     else:
         st.write("あなたは極度のヤンデレの傾向があります。相手への執着が強すぎて、危険な行動につながる可能性があります。専門家に相談することをお勧めします。")
 
-    # ランダムなアドバイスを提供
     advices = [
         "相手の個人的な空間と時間を尊重することが大切です。",
         "自分自身の趣味や友人関係を大切にしましょう。",
@@ -55,3 +68,5 @@ if st.button("診断する"):
         "相手との関係だけでなく、自己成長にも焦点を当てることが重要です。"
     ]
     st.write("アドバイス:", random.choice(advices))
+
+
