@@ -3,6 +3,24 @@ import random
 from PIL import Image
 import requests
 from io import BytesIO
+import base64
+
+def add_bg_from_url():
+    # ヤンデレの画像URLを指定します。著作権フリーの画像を使用してください。
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background-image: url("https://example.com/path/to/yandere_image.jpg");
+             background-attachment: fixed;
+             background-size: cover;
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+    )
+
+add_bg_from_url()
 
 # CSSスタイルの定義
 st.markdown(
