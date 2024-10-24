@@ -1,10 +1,78 @@
 import streamlit as st
 import random
-from PIL import Image
-import requests
-from io import BytesIO
 import base64
+@import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
 
+body {
+    font-family: 'Yusei Magic', sans-serif;
+    color: #FF69B4;
+}
+
+.stApp {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.cute-box {
+    background-color: rgba(255, 192, 203, 0.7);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 10px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.result {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #FF1493;
+    margin: 20px 0;
+}
+
+.advice {
+    font-style: italic;
+    background-color: rgba(255, 255, 224, 0.7);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.footer {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 30px;
+    color: #808080;
+}
+
+/* Streamlitのデフォルトスタイルをオーバーライド */
+.stButton>button {
+    background-color: #FF69B4;
+    color: white;
+    border-radius: 20px;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.stButton>button:hover {
+    background-color: #FF1493;
+    transform: scale(1.05);
+}
+
+.stSlider>div>div>div>div {
+    background-color: #FF69B4;
+}
+
+# カスタムCSSの定義
+def local_css(file_name):
+    with open(file_name, "r") as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+# カスタムCSSファイルの適用
+local_css("style.css")
+
+# 背景画像の設定
 def add_bg_from_local(image_file):
     with open(image_file, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
@@ -12,7 +80,7 @@ def add_bg_from_local(image_file):
     f"""
     <style>
     .stApp {{
-        background-image: url(data:image/{"png"};base64,{encoded_string.decode()});
+        background-image: url(data:image/png;base64,{encoded_string.decode()});
         background-size: cover;
     }}
     </style>
@@ -20,64 +88,16 @@ def add_bg_from_local(image_file):
     unsafe_allow_html=True
     )
 
-add_bg_from_local('path/to/your/image.png')  # ローカルの画像ファイルへのパスを指定
-
-# CSSスタイルの定義
-st.markdown(
-    """
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-
-    body {
-        background-image: url('https://www.transparenttextures.com/patterns/paper.png');
-        font-family: 'Pacifico', cursive;
-        color: #333;
-    }
-    .title {
-        color: #ff69b4;
-        text-align: center;
-        font-size: 2.5em;
-        margin-bottom: 20px;
-    }
-    .question {
-        color: #ff1493;
-        font-size: 1.2em;
-        margin-top: 10px;
-    }
-    .result {
-        color: #ff4500;
-        font-weight: bold;
-        text-align: center;
-        font-size: 1.5em;
-    }
-    .button {
-        background-color: #ff69b4;
-        color: white;
-        border-radius: 15px;
-        padding: 10px 20px;
-        font-size: 1.2em;
-    }
-    .button:hover {
-        background-color: #ff1493;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+add_bg_from_local('cute_background.png')  # かわいい背景画像を使用
 
 st.title("💖 ヤンデレ度診断 💖")
 
-# ヤンデレ画像のURL（例として使用します。実際の使用には著作権に注意してください）
-yandere_image_url = "https://example.com/yandere_image.jpg"
-
-# 画像を読み込んで表示
-try:
-    response = requests.get(yandere_image_url)
-    image = Image.open(BytesIO(response.content))
-    st.image(image, caption="ヤンデレのイメージ", use_column_width=True)
-except Exception as e:
-    st.warning("画像の読み込みに失敗しました。代わりにテキストで説明します。")
-    st.write("ヤンデレとは、好意を寄せる相手に対して過剰な愛情や執着を示す人物像を指します。")
+st.markdown("""
+<div class='cute-box'>
+    <p>あなたの愛情度をチェックしましょう！</p>
+    <p>以下の質問に正直に答えてくださいね♪</p>
+</div>
+""", unsafe_allow_html=True)
 
 questions = [
     "💌 好きな人の連絡先をすべて知っていますか？",
@@ -97,39 +117,46 @@ questions = [
     "😵 相手のことを考えると、時々冷静さを失うことがありますか？"
 ]
 
-st.write("以下の質問に答えて、あなたのヤンデレ度を診断しましょう。")
-
 scores = []
 for i, question in enumerate(questions):
-    score = st.slider(f"質問 {i+1}: {question}", 0, 5, 2)
+    score = st.slider(f"質問 {i+1}: {question}", 0, 5, 2, key=f"q{i}")
     scores.append(score)
 
-if st.button("診断する", key="submit", help="診断結果を見る"):
+if st.button("診断する💕", key="submit", help="あなたの愛情度を診断します"):
     total_score = sum(scores)
     max_score = len(questions) * 5
     yandere_percentage = (total_score / max_score) * 100
 
-    st.markdown(f"<div class='result'>あなたのヤンデレ度は: {yandere_percentage:.2f}%</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='result'>あなたの愛情度は: {yandere_percentage:.2f}%</div>", unsafe_allow_html=True)
 
     if yandere_percentage < 20:
-        st.write("あなたはほとんどヤンデレの傾向がありません。健全な関係を築けそうです。")
+        result = "健全な愛情です！素敵な関係を築けそうですね♪"
     elif yandere_percentage < 40:
-        st.write("あなたは少しヤンデレの傾向があります。相手を大切に思う気持ちは素晴らしいですが、適度な距離感を保つことも大切です。")
+        result = "ちょっぴり強い愛情かも。でも、まだ大丈夫そうです！"
     elif yandere_percentage < 60:
-        st.write("あなたはかなりヤンデレの傾向があります。相手を思う気持ちが強すぎて、時に相手を窮屈にさせてしまうかもしれません。")
+        result = "愛情が強めです。相手の気持ちも大切にしてくださいね。"
     elif yandere_percentage < 80:
-        st.write("あなたは高度なヤンデレの傾向があります。相手への愛情が強すぎて、健全な関係を築くのが難しいかもしれません。カウンセリングを検討してみてはいかがでしょうか。")
+        result = "かなり強い愛情をお持ちのようです。少し落ち着いてみましょう。"
     else:
-        st.write("あなたは極度のヤンデレの傾向があります。相手への執着が強すぎて、危険な行動につながる可能性があります。専門家に相談することをお勧めします。")
+        result = "とっても強い愛情ですね。でも、相手を大切にするためにも、自分自身も大切にしましょう。"
+
+    st.markdown(f"<div class='cute-box'>{result}</div>", unsafe_allow_html=True)
 
     advices = [
-        "相手の個人的な空間と時間を尊重することが大切です。",
-        "自分自身の趣味や友人関係を大切にしましょう。",
-        "相手の行動を制限しようとする衝動を感じたら、深呼吸をして冷静になりましょう。",
-        "嫉妬の感情は自然ですが、それをコントロールする方法を学びましょう。",
-        "相手との関係だけでなく、自己成長にも焦点を当てることが重要です。"
+        "相手の個性を尊重することも愛情表現の一つです💖",
+        "自分の趣味や友達との時間も大切にしましょう🌟",
+        "相手のことを考えすぎて疲れちゃったら、深呼吸してリラックス😌",
+        "嫉妬の気持ちは自然なものです。でも、それをコントロールする方法を見つけましょう🎭",
+        "二人の関係だけでなく、自分自身の成長にも目を向けてみては？🌱"
     ]
     
-    st.write("💡 アドバイス:", random.choice(advices))
+    st.markdown(f"<div class='advice'>💡 アドバイス: {random.choice(advices)}</div>", unsafe_allow_html=True)
+
+st.markdown("""
+<div class='footer'>
+    <p>※この診断はあくまで娯楽目的です。専門家の診断ではありません。</p>
+    <p>困ったことがあれば、信頼できる人や専門家に相談してくださいね。</p>
+</div>
+""", unsafe_allow_html=True)
 
 
