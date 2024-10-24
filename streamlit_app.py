@@ -5,22 +5,22 @@ import requests
 from io import BytesIO
 import base64
 
-def add_bg_from_url():
-    # ヤンデレの画像URLを指定します。著作権フリーの画像を使用してください。
+def add_bg_from_local(image_file):
+    with open(image_file, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read())
     st.markdown(
-         f"""
-         <style>
-         .stApp {{
-             background-image: url("https://example.com/path/to/yandere_image.jpg");
-             background-attachment: fixed;
-             background-size: cover;
-         }}
-         </style>
-         """,
-         unsafe_allow_html=True
+    f"""
+    <style>
+    .stApp {{
+        background-image: url(data:image/{"png"};base64,{encoded_string.decode()});
+        background-size: cover;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
     )
 
-add_bg_from_url()
+add_bg_from_local('path/to/your/image.png')  # ローカルの画像ファイルへのパスを指定
 
 # CSSスタイルの定義
 st.markdown(
