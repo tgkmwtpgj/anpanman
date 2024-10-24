@@ -1,41 +1,57 @@
-# Streamlitライブラリをインポート
 import streamlit as st
 import random
 
-# ページ設定（タブに表示されるタイトル、表示幅）
-st.set_page_config(page_title="タイトル", layout="wide")
+st.title("詳細ヤンデレ度診断")
 
-# タイトルを設定
-st.title('Streamlitのサンプルアプリ')
+questions = [
+    "好きな人の連絡先をすべて知っていますか？",
+    "相手の予定を把握していないと不安になりますか？",
+    "相手が他の異性と話しているのを見るとどう感じますか？",
+    "相手のSNSをこまめにチェックしていますか？",
+    "相手との関係を邪魔する人がいたらどうしますか？",
+    "相手の持ち物や部屋に自分の物を置きたくなりますか？",
+    "相手の写真をたくさん撮影していますか？",
+    "相手が自分以外の人と仲良くしているのを見ると嫉妬しますか？",
+    "相手の行動を制限したいと思うことがありますか？",
+    "相手のためなら何でもできると思いますか？",
+    "相手の趣味や好みに合わせて自分を変えようとしますか？",
+    "相手との将来を頻繁に想像しますか？",
+    "相手との関係が終わるくらいなら、何か極端なことをしても良いと思いますか？",
+    "相手の幸せが自分の幸せだと感じますか？",
+    "相手のことを考えると、時々冷静さを失うことがありますか？"
+]
 
-# テキスト入力ボックスを作成し、ユーザーからの入力を受け取る
-user_input = st.text_input('あなたの名前を入力してください')
+st.write("以下の質問に答えて、あなたのヤンデレ度を診断しましょう。")
 
-# ボタンを作成し、クリックされたらメッセージを表示
-if st.button('挨拶する'):
-    if user_input:  # 名前が入力されているかチェック
-        st.success(f'🌟 こんにちは、{user_input}さん! 🌟')  # メッセージをハイライト
+scores = []
+for i, question in enumerate(questions):
+    score = st.slider(f"質問 {i+1}: {question}", 0, 5, 2)
+    scores.append(score)
+
+if st.button("診断する"):
+    total_score = sum(scores)
+    max_score = len(questions) * 5
+    yandere_percentage = (total_score / max_score) * 100
+
+    st.write(f"あなたのヤンデレ度は: {yandere_percentage:.2f}%")
+
+    if yandere_percentage < 20:
+        st.write("あなたはほとんどヤンデレの傾向がありません。健全な関係を築けそうです。")
+    elif yandere_percentage < 40:
+        st.write("あなたは少しヤンデレの傾向があります。相手を大切に思う気持ちは素晴らしいですが、適度な距離感を保つことも大切です。")
+    elif yandere_percentage < 60:
+        st.write("あなたはかなりヤンデレの傾向があります。相手を思う気持ちが強すぎて、時に相手を窮屈にさせてしまうかもしれません。")
+    elif yandere_percentage < 80:
+        st.write("あなたは高度なヤンデレの傾向があります。相手への愛情が強すぎて、健全な関係を築くのが難しいかもしれません。カウンセリングを検討してみてはいかがでしょうか。")
     else:
-        st.error('名前を入力してください。')  # エラーメッセージを表示
+        st.write("あなたは極度のヤンデレの傾向があります。相手への執着が強すぎて、危険な行動につながる可能性があります。専門家に相談することをお勧めします。")
 
-# スライダーを作成し、値を選択
-number = st.slider('好きな数字（10進数）を選んでください', 0, 100)
-
-# 補足メッセージ
-st.caption("十字キー（左右）でも調整できます。")
-
-# 選択した数字を表示
-st.write(f'あなたが選んだ数字は「{number}」です。')
-
-# 選択した数値を2進数に変換
-binary_representation = bin(number)[2:]  # 'bin'関数で2進数に変換し、先頭の'0b'を取り除く
-st.info(f'🔢 10進数の「{number}」を2進数で表現すると「{binary_representation}」になります。 🔢')  # 2進数の表示をハイライト
-
-#　最大値と最小値の入力を受け取る
-min_val = st.number_input('最小値を入力してください',value=0)
-max_val = st.number_input('最大値を入力してください',value=10)
-
-# 乱数生成ボタンを配置
-if st.button('乱数を生成'):
-    random_num = random.randint(min_val,max_val)
-    st.write(f'生成された乱数:{random_num}')
+    # ランダムなアドバイスを提供
+    advices = [
+        "相手の個人的な空間と時間を尊重することが大切です。",
+        "自分自身の趣味や友人関係を大切にしましょう。",
+        "相手の行動を制限しようとする衝動を感じたら、深呼吸をして冷静になりましょう。",
+        "嫉妬の感情は自然ですが、それをコントロールする方法を学びましょう。",
+        "相手との関係だけでなく、自己成長にも焦点を当てることが重要です。"
+    ]
+    st.write("アドバイス:", random.choice(advices))
