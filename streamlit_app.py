@@ -1,94 +1,68 @@
 import streamlit as st
 import random
-import base64
-@import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
-
-body {
-    font-family: 'Yusei Magic', sans-serif;
-    color: #FF69B4;
-}
-
-.stApp {
-    background-color: rgba(255, 255, 255, 0.7);
-}
-
-.cute-box {
-    background-color: rgba(255, 192, 203, 0.7);
-    border-radius: 15px;
-    padding: 20px;
-    margin: 10px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.result {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    color: #FF1493;
-    margin: 20px 0;
-}
-
-.advice {
-    font-style: italic;
-    background-color: rgba(255, 255, 224, 0.7);
-    border-radius: 10px;
-    padding: 10px;
-    margin: 10px 0;
-}
-
-.footer {
-    font-size: 12px;
-    text-align: center;
-    margin-top: 30px;
-    color: #808080;
-}
-
-/* Streamlitのデフォルトスタイルをオーバーライド */
-.stButton>button {
-    background-color: #FF69B4;
-    color: white;
-    border-radius: 20px;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
-
-.stButton>button:hover {
-    background-color: #FF1493;
-    transform: scale(1.05);
-}
-
-.stSlider>div>div>div>div {
-    background-color: #FF69B4;
-}
 
 # カスタムCSSの定義
-def local_css(file_name):
-    with open(file_name, "r") as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+st.markdown("""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&display=swap');
 
-# カスタムCSSファイルの適用
-local_css("style.css")
-
-# 背景画像の設定
-def add_bg_from_local(image_file):
-    with open(image_file, "rb") as image_file:
-        encoded_string = base64.b64encode(image_file.read())
-    st.markdown(
-    f"""
-    <style>
-    .stApp {{
-        background-image: url(data:image/png;base64,{encoded_string.decode()});
-        background-size: cover;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-    )
-
-add_bg_from_local('cute_background.png')  # かわいい背景画像を使用
+    body {
+        font-family: 'Mochiy Pop One', sans-serif;
+        background: linear-gradient(135deg, #FFD1DC, #FFC0CB, #FFB6C1);
+        color: #FF69B4;
+    }
+    .stApp {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .cute-box {
+        background-color: rgba(255, 182, 193, 0.3);
+        border-radius: 15px;
+        padding: 20px;
+        margin: 10px 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .result {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        color: #FF1493;
+        margin: 20px 0;
+    }
+    .advice {
+        font-style: italic;
+        background-color: rgba(255, 255, 224, 0.7);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+    .footer {
+        font-size: 12px;
+        text-align: center;
+        margin-top: 30px;
+        color: #808080;
+    }
+    .stButton>button {
+        background-color: #FF69B4;
+        color: white;
+        border-radius: 20px;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    .stButton>button:hover {
+        background-color: #FF1493;
+        transform: scale(1.05);
+    }
+    .stSlider>div>div>div>div {
+        background-color: #FF69B4;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 st.title("💖 ヤンデレ度診断 💖")
 
